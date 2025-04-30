@@ -1,33 +1,45 @@
+import java.io.File;
+
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+
+
 public class App{
 
     public static void main(String[] args) {
+        
 
-
-        Simulador simulador = new Simulador(100000); 
-        
-        Fila f1 = new Fila(1, Integer.MAX_VALUE, 2, 4, 1, 2);
-        
-        Fila f2 = new Fila(2, 5, 0, 0, 4, 8); 
-        
-        Fila f3 = new Fila(2, 10, 0, 0, 5, 15); 
-        
-        f1.setNext(f2, 0.8);
-        f1.setNext(f3, 0.2);
-        
-        f2.setNext(f1, 0.3);
-        f2.setNext(f3, 0.5);
+        JFrame frame = new JFrame();
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true); 
      
-        f3.setNext(f2, 0.7);
-    
-        simulador.addFila(f1);
-        simulador.addFila(f2);
-        simulador.addFila(f3);
+        JFileChooser fileChooser = new JFileChooser();
+
+        String caminhoAtual = System.getProperty("user.dir");
+        File diretorioInicial = new File(caminhoAtual);
+        fileChooser.setCurrentDirectory(diretorioInicial);
+        int resultado = fileChooser.showOpenDialog(frame);
         
-        simulador.simular(0); 
+
+        if (resultado == JFileChooser.APPROVE_OPTION) {
+           diretorioInicial = fileChooser.getSelectedFile();
+        } else {
+            return;
+        }
+
+        frame.dispose(); 
+
+        SimuladorMaker simuladorMaker = new SimuladorMaker();
+
+        Simulador simulador = simuladorMaker.configurarSimulador(diretorioInicial.getAbsolutePath());
+        
+        simulador.simular(); 
 
         simulador.printaHistorico();
-       
 
+       //simulador.printaTopologia();
+    
     }
 
 

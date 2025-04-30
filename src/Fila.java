@@ -188,7 +188,13 @@ public class Fila {
             System.out.printf("%nTempo total acumulado: %.4f%n", total);
             System.out.printf("Total de clientes perdidos: %d%n", this.loss);
         }
+    
+
+    public HashMap<Fila, Double> getNextMap() {
+        return next;
     }
+
+}
 
     
 

@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Map;
 import java.util.PriorityQueue;
 
 public class Simulador {
@@ -24,14 +25,6 @@ public class Simulador {
 
     }
 
-    public Simulador(){
-
-
-
-
-
-        
-    }
 
     public void addFila(Fila fila){
 
@@ -39,9 +32,13 @@ public class Simulador {
 
     }
 
-    public void simular(double firstArrival){
+    public void addFirst(double firstArrival){
 
         atual = new Evento(EventoTipo.Chegada, firstArrival, filas.get(0));
+
+    }
+
+    public void simular(){
 
         escalonador.add(atual);
         historico.add(atual);
@@ -176,5 +173,35 @@ public class Simulador {
 
       
     }
+
+    public void printaTopologia() {
+    System.out.println("==== SISTEMA DE FILAS ====\n");
+
+    for (int i = 0; i < filas.size(); i++) {
+        Fila fila = filas.get(i);
+        System.out.println("Fila " + i + ":");
+        System.out.println("  - Servidores: " + fila.servers());
+        System.out.println("  - Capacidade: " + fila.capacity());
+        System.out.printf("  - Tempo de chegada: [%.2f, %.2f]%n", fila.getMinArrival(), fila.getMaxArrival());
+        System.out.printf("  - Tempo de serviço: [%.2f, %.2f]%n", fila.getMinService(), fila.getMaxService());
+
+        if (fila.hasNext()) {
+            System.out.println("  - Conectada para:");
+            for (Map.Entry<Fila, Double> entry : fila.getNextMap().entrySet()) {
+                int destino = filas.indexOf(entry.getKey());
+                System.out.printf("    -> Fila %d (%.2f%%)%n", destino, entry.getValue() * 100);
+            }
+        } else {
+            System.out.println("  - Sem conexões para outras filas.");
+        }
+
+        System.out.println();
+    }
+}
+
+   
+        
+
+   
 
 }
